@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "api-whatsappweb"
+version = "0.1.0"
+description = ""
+authors = ["davies <davies.araujo@fazobetai.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[tool.poetry.group.dev.dependencies]
+blue = "^0.9.1"
+isort = "^5.13.2"
+pytest = "^7.4.3"
+pytest-cov = "^4.1.0"
+ipython = "^8.18.1"
+
+
+[tool.poetry.group.doc.dependencies]
+mkdocs-material = "^9.5.2"
+mkdocstrings = "^0.24.0"
+mkdocstrings-python = "^1.7.5"
+
+
+[tool.pytest.ini_options]
+pythonpath = [".", "code"]
+
+
+[tool.isort]
+profile = "black"
+line_length = 79
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

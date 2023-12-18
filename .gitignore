@@ -1,0 +1,5 @@
+__pycache__/ 
+pass.env 
+htmlcov/ 
+.coverage 
+.pytest_cache/ 
