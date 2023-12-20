@@ -1,3 +1,6 @@
+![Logo_do_projeto](assets/logo.png){width=300 .center} <!--{chaves} não funcionam por padrão, necessário usar o markdow_extensions-->
+
+
 ### 1° Run server
 
     make up

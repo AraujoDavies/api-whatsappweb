@@ -1,0 +1,22 @@
+site_name: API WHATSAPP WEB
+repo_url: https://github.com/AraujoDavies/api-whatsappweb.git
+repo_name: AraujoDavies/api-roletas
+repo_uri: tree/main/docs
+
+theme:
+  name: material
+  language: pt-br
+  logo: assets/logo.png
+  favicon: assets/logo.png
+
+markdown_extensions: 
+  - attr_list # para conseguir usar {} na imagem do index.md
+
+extra_css:
+  - stylesheets/extra.css
+
+plugins: 
+- mkdocstrings: # documentar por meio das funções
+    handlers:
+      python:
+        paths: [code]
