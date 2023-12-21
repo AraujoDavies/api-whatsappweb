@@ -26,10 +26,6 @@ format: ## formata o script e ordena os imports
 	poetry run blue .
 	poetry run isort .
 
-.PHONY: dev
-dev: ## Start Container em modo iterativo
-	poetry run ipython -i main.py
-
 .PHONY: git
 git: ## MSG - Sobe codigo pro GIT (Necessario usar variavel)
 	@make format
@@ -50,7 +46,17 @@ docs:
 .PHONY: build
 build: # make build v=1 - remember to adjust image version in compose.yml
 	poetry export -o requirements.txt
-	docker build -t api-whatsweb:${v} .
+	docker build -t api-whatsweb:dev .
+
+.PHONY: dev
+dev: ## Start Container em modo iterativo
+	poetry run ipython -i code/main.py
+
+# .PHONY: dev
+# dev: ## Start Container em modo iterativo
+# 	docker run -ti -v ${PWD}/:/app api-whatsweb:dev /bin/bash
+# # pip install -r requirements.txt
+# # uvicorn --app-dir /app/code main:app --host 0.0.0.0 --port 80
 
 .PHONY: up
 up: # make run-docker v=123
