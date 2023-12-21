@@ -14,10 +14,20 @@ logging.basicConfig(
 
 load_dotenv()
 
-app = WhatsWebAPI(1, getenv('VALID_PROFILE_PATH'))
-print(getenv('VALID_PROFILE_PATH'))
+headless_choose = True   # True | False
+app_on = WhatsWebAPI(
+    1, getenv('VALID_PROFILE_PATH'), headless=headless_choose
+)   # in this we need to scan QRCODE
+app_off = WhatsWebAPI(
+    1, headless=headless_choose
+)   # start browser without QRCODE session
+
+
+@fixture
+def test_app_on():
+    return app_on
 
 
 @fixture
 def test_app():
-    return app
+    return app_off

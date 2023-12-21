@@ -27,7 +27,9 @@ def test_if_save_screenshot_works(test_app):
 
 
 def test_if_login_code_is_returned_with_success(test_app):
-    assert len(test_app.get_login_code(getenv('VALID_PHONE_NUMBER'))) == 9
+    return_data = test_app.get_login_code(getenv('VALID_PHONE_NUMBER'))
+    print(return_data)
+    assert len(return_data) == 9
 
 
 def test_if_login_code_is_returned_with_success_in_invalid_number_cases(
@@ -38,3 +40,13 @@ def test_if_login_code_is_returned_with_success_in_invalid_number_cases(
 
 def test_if_app_kill_browser_is_success(test_app):
     assert test_app.kill_browser() == 'Browser killed'
+
+
+def test_if_chat_that_exists_is_find(test_app_on):
+    test_app_on.run_browser()
+    assert test_app_on.find_chat('Sla') == 'Chat found.'
+
+
+def test_if_chat_that_not_exists_is_find(test_app_on):
+    assert test_app_on.find_chat('NOT_FOUND_CHAT') == 'Chat name not found.'
+    test_app_on.kill_browser()

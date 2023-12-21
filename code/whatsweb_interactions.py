@@ -1,10 +1,12 @@
+import logging
 from datetime import datetime
 from os import getenv, listdir, remove
+from time import sleep
+from typing import Self
 
-from selenium import webdriver
-from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
+from selenium_helpers import clean_input_field
 from splinter import Browser
 from webdriver_manager.chrome import ChromeDriverManager
 
@@ -31,6 +33,7 @@ class WhatsWebAPI:
         self.user_id = user_id
         self.driver_state = 'Not started'
         self.driver = []
+        self.url = 'https://web.whatsapp.com/'
 
     def run_browser(self) -> str:
         """
@@ -145,9 +148,7 @@ class WhatsWebAPI:
         except Exception as error:
             return error
 
-    def get_login_code(
-        self, phone_number: str, url: str = 'https://web.whatsapp.com/'
-    ) -> str | Exception:
+    def get_login_code(self, phone_number: str) -> str | Exception:
         """
         Get login code using a phone number.
 
@@ -164,12 +165,12 @@ class WhatsWebAPI:
             <whatsweb_interactions.WhatsWebAPI at 0x1231c879f50>
             >>> app.get_login_code('5511987654321')
             'P8FD-8K92'
-            >>> app.get_login_code()
+            >>> app.get_login_code('5511987654321')
             'B7Z3-DDX9'
         """
         try:
             driver = self.driver[0]
-
+            url = self.url
             driver.visit(url)
 
             btn_conectar_com_numero = '//span[@role="button"]'
@@ -195,16 +196,14 @@ class WhatsWebAPI:
                 input_whastsapp_number
             ).first
 
-            ac = ActionChains(driver.driver)
-            ac.move_to_element(input_whastsapp_number_sel)
-            ac.click()
-            ac.key_down(Keys.CONTROL)
-            ac.key_down('A')
-            ac.key_up('A')
-            ac.key_up(Keys.CONTROL)
-            ac.key_down(Keys.BACKSPACE)
-            ac.key_up(Keys.BACKSPACE)
-            ac.perform()
+            result_clean_input = clean_input_field(
+                driver=driver.driver, input_element=input_whastsapp_number_sel
+            )
+
+            if result_clean_input is False:
+                # error to clean input
+                return 'Fail to clean input field - see logging'
+
             input_whastsapp_number.fill('+' + phone_number)
 
             btn_avancar = '//div[@role="button"]'
@@ -220,3 +219,63 @@ class WhatsWebAPI:
             return code
         except Exception as error:
             return error
+
+    def find_chat(self, chat_name: str) -> str | Exception:
+        """
+        fill search bar input for find some chat to send message.
+
+        Args:
+            chat_name (_str_): name of the chat that message will send. (need to be equal)
+
+        Return:
+
+        Examples:
+            >>> app.get_login_code('5511987654321')
+            Chat found. | Chat name not found.
+        """
+        driver = self.driver[0]
+        # verifica se a barra está na tela
+        search_bar = driver.is_element_present_by_xpath(
+            '//div[@title="Caixa de texto de pesquisa"]//p[contains(@class, "selectable-text")]',
+            wait_time=5,
+        )
+
+        # caso sim prossiga
+        if search_bar is False:   # Recarregue a página para continuar...
+            url = self.url
+            driver.visit(url)
+            sleep(5)
+            search_bar = driver.is_element_present_by_xpath(
+                '//div[@title="Caixa de texto de pesquisa"]//p[contains(@class, "selectable-text")]',
+                wait_time=15,
+            )
+
+        search_bar_sel = driver.driver.find_element(
+            'xpath',
+            '//div[@title="Caixa de texto de pesquisa"]//p[contains(@class, "selectable-text")]',
+        )
+        clean_input_field(driver=driver.driver, input_element=search_bar_sel)
+
+        try:
+            find_chat = driver.find_by_xpath(
+                '//div[@title="Caixa de texto de pesquisa"]//p[contains(@class, "selectable-text")]'
+            ).first
+
+            find_chat.fill(chat_name)
+
+            chat = driver.find_by_xpath(f'//span[@title="{chat_name}"]')
+
+            chat.click()
+
+            return 'Chat found.'
+        except Exception as error:
+            # CHAT NÃO ENCONTRADO
+            logging.error(error)
+            if 'no elements could be found with xpath "//span[@title=' in str(
+                error
+            ):
+                return 'Chat name not found.'
+            return error
+
+    # healthcheck
+    # send_message
