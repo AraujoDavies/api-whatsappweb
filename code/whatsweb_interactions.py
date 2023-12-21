@@ -1,5 +1,5 @@
 from datetime import datetime
-from os import getenv
+from os import getenv, listdir, remove
 
 from selenium import webdriver
 from selenium.webdriver import ActionChains, Keys
@@ -132,7 +132,15 @@ class WhatsWebAPI:
             driver = self.driver[0]
             user_id = self.user_id
             filename = f'user_{user_id}_date_{str(datetime.now().timestamp()).split(".")[0]}.png'
-            screenshot_state = driver.driver.save_screenshot(filename)
+
+            for file in listdir('./prints/'):
+                print(file)
+                if f'user_{user_id}_' in file:
+                    remove('./prints/' + file)
+
+            screenshot_state = driver.driver.save_screenshot(
+                './prints/' + filename
+            )
             return screenshot_state
         except Exception as error:
             return error
@@ -155,9 +163,9 @@ class WhatsWebAPI:
             >>> app = WhatsWebAPI()
             <whatsweb_interactions.WhatsWebAPI at 0x1231c879f50>
             >>> app.get_login_code('5511987654321')
-            a code like: 'P8FD-8K92'
+            'P8FD-8K92'
             >>> app.get_login_code()
-            a code like: 'B7Z3-DDX9'
+            'B7Z3-DDX9'
         """
         try:
             driver = self.driver[0]
