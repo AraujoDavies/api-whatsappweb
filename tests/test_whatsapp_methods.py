@@ -47,6 +47,24 @@ def test_if_chat_that_exists_is_find(test_app_on):
     assert test_app_on.find_chat('Sla') == 'Chat found.'
 
 
+def test_if_send_message_fail_in_cases_that_not_contain_any_message(
+    test_app_on,
+):
+    assert test_app_on.send_message('') == 'Message failed - input is empty'
+
+
+def test_if_send_message(test_app_on):
+    assert test_app_on.send_message('Hello world!') == 'Message sended'
+
+
+def test_if_send_message_with_emojis(test_app_on):
+    assert test_app_on.send_message('💰🐯📚🎯💰🚀') == 'Message sended'
+
+
+def test_if_send_message_with_emojis_using_ctrlc_parameter(test_app_on):
+    assert test_app_on.send_message('💰🐯📚🎯💰🚀', True) == 'Message sended'
+
+
 def test_if_chat_that_not_exists_is_find(test_app_on):
     assert test_app_on.find_chat('NOT_FOUND_CHAT') == 'Chat name not found.'
     test_app_on.kill_browser()

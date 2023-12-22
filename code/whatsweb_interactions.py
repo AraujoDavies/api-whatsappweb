@@ -1,13 +1,13 @@
 import logging
 from datetime import datetime
-from os import getenv, listdir, remove
+from os import getenv, listdir, mkdir, remove
 from time import sleep
-from typing import Self
 
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
-from selenium_helpers import clean_input_field
+from selenium_helpers import clean_input_field, paste_content
 from splinter import Browser
+from splinter.exceptions import ElementDoesNotExist
 from webdriver_manager.chrome import ChromeDriverManager
 
 
@@ -136,10 +136,13 @@ class WhatsWebAPI:
             user_id = self.user_id
             filename = f'user_{user_id}_date_{str(datetime.now().timestamp()).split(".")[0]}.png'
 
-            for file in listdir('./prints/'):
-                print(file)
-                if f'user_{user_id}_' in file:
-                    remove('./prints/' + file)
+            try:
+                for file in listdir('./prints/'):
+                    print(file)
+                    if f'user_{user_id}_' in file:
+                        remove('./prints/' + file)
+            except:
+                mkdir('prints')
 
             screenshot_state = driver.driver.save_screenshot(
                 './prints/' + filename
@@ -228,6 +231,7 @@ class WhatsWebAPI:
             chat_name (_str_): name of the chat that message will send. (need to be equal)
 
         Return:
+            Chat state | Exception
 
         Examples:
             >>> app.get_login_code('5511987654321')
@@ -277,5 +281,51 @@ class WhatsWebAPI:
                 return 'Chat name not found.'
             return error
 
-    # healthcheck
-    # send_message
+    def send_message(
+        self, message: str, ctrl_c: bool = False
+    ) -> str | Exception:
+        """
+        Send messages in some chat.
+
+        Args:
+            ctrl_c (_bool_): Case want to send message using CTRL+S (JS event). Default value is False, messsage send by selenium event, this feature is reccomend is cases that message contains EMOJIS.
+
+        Return:
+            Message state | Exception
+
+        Examples:
+            >>> app.send_message()
+            'message sended'
+        """
+        try:
+            driver = self.driver[0]
+            input_message = driver.driver.find_element(
+                'xpath', '//div[@title="Digite uma mensagem"]'
+            )   # //p[contains(@class, "selectable-text")]')
+
+            clean_input_field(driver.driver, input_message)
+
+            if ctrl_c is True:
+                paste_content(driver.driver, input_message, message)
+            else:
+                try:
+                    input_message.send_keys(message)   # if characters error
+                except:
+                    paste_content(driver.driver, input_message, message)
+
+            try:
+                fecha_link_preview = driver.find_by_xpath(
+                    '//div[@data-testid="popup_panel"]//span[@data-testid="x"]'
+                )
+                fecha_link_preview.click()
+            except:
+                ...
+
+            try:
+                send_btn = driver.find_by_xpath('//span[@data-icon="send"]')
+                send_btn.click()
+                return 'Message sended'
+            except ElementDoesNotExist as e:
+                return 'Message failed - input is empty'
+        except Exception as error:
+            return error

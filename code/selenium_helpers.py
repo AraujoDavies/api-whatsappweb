@@ -30,3 +30,25 @@ def clean_input_field(driver, input_element) -> bool:
     except Exception as error:
         logging.critical(error)
         return False
+
+
+def paste_content(driver, el, content):
+    """
+    params:
+        driver -> webdriver
+        el -> webelement
+        content -> mensagem
+    """
+    driver.execute_script(
+        f"""
+const text = `{content}`;
+const dataTransfer = new DataTransfer();
+dataTransfer.setData('text', text);
+const event = new ClipboardEvent('paste', {{
+  clipboardData: dataTransfer,
+  bubbles: true
+}});
+arguments[0].dispatchEvent(event)
+""",
+        el,
+    )
