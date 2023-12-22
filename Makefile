@@ -36,7 +36,7 @@ git: ## MSG - Sobe codigo pro GIT (Necessario usar variavel)
 
 .PHONY: test
 test:
-	poetry run pytest . -x -s --cov=code -vv --disable-warnings
+	poetry run pytest . -x -s --cov=code -vv --disable-warnings ${p}
 	poetry run coverage html
 
 .PHONY: docs

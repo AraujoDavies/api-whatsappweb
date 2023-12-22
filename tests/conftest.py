@@ -24,10 +24,10 @@ app_off = WhatsWebAPI(
 
 
 @fixture
-def test_app_on():
+def test_zap_on():
     return app_on
 
 
 @fixture
-def test_app():
+def test_zap():
     return app_off

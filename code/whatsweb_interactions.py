@@ -33,7 +33,7 @@ class WhatsWebAPI:
         self.user_id = user_id
         self.driver_state = 'Not started'
         self.driver = []
-        self.url = 'https://web.whatsapp.com/'
+        self.url = getenv('URL_WHATSAPP')
 
     def run_browser(self) -> str:
         """
@@ -45,7 +45,7 @@ class WhatsWebAPI:
         Examples:
             >>> app = WhatsWebAPI()
             <whatsweb_interactions.WhatsWebAPI at 0x1231c879f50>
-            >>> app.run_browser()
+            >>> zap.run_browser()
             'Started with success.'
 
         """
@@ -100,9 +100,9 @@ class WhatsWebAPI:
         Examples:
             >>> app = WhatsWebAPI()
             <whatsweb_interactions.WhatsWebAPI at 0x1231c879f50>
-            >>> app.run_browser()
+            >>> zap.run_browser()
             'Started with success.'
-            >>> app.kill_browser()
+            >>> zap.kill_browser()
             'Browser killed'
         """
         try:
@@ -125,8 +125,8 @@ class WhatsWebAPI:
             screenshot_state | Exception
 
         Example:
-            >>> app.driver[0].visit('https://www.google.com')
-            >>> app.save_screenshot()
+            >>> zap.driver[0].visit('https://www.google.com')
+            >>> zap.save_screenshot()
             True
         """
         try:
@@ -158,17 +158,15 @@ class WhatsWebAPI:
         Args:
             phone_number (_str_): [countrycode][areacode][number]
 
-            url (_str_): default value is 'https://web.whatsapp.com/'
-
         Return:
             code to login | Exception
 
         Examples:
             >>> app = WhatsWebAPI()
             <whatsweb_interactions.WhatsWebAPI at 0x1231c879f50>
-            >>> app.get_login_code('5511987654321')
+            >>> zap.get_login_code('5511987654321')
             'P8FD-8K92'
-            >>> app.get_login_code('5511987654321')
+            >>> zap.get_login_code('5511987654321')
             'B7Z3-DDX9'
         """
         try:
@@ -234,7 +232,7 @@ class WhatsWebAPI:
             Chat state | Exception
 
         Examples:
-            >>> app.get_login_code('5511987654321')
+            >>> zap.get_login_code('5511987654321')
             Chat found. | Chat name not found.
         """
         driver = self.driver[0]
@@ -294,7 +292,7 @@ class WhatsWebAPI:
             Message state | Exception
 
         Examples:
-            >>> app.send_message()
+            >>> zap.send_message()
             'message sended'
         """
         try:
