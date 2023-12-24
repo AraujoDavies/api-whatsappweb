@@ -1,0 +1,17 @@
+.pytest_cache/
+docs/
+profiles/
+prints/
+tests/
+htmlcov/
+__pycache__/
+
+
+.coverage
+.gitignore
+*.md
+mkdocs.yml
+poetry.lock
+pyproject.toml
+
+*.log

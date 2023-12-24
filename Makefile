@@ -50,7 +50,7 @@ docs:
 .PHONY: build
 build: # make build v=1 - remember to adjust image version in compose.yml
 # poetry export -o requirements.txt
-	sudo chown -R ubuntu profiles/
+# sudo chown -R ubuntu profiles/
 	docker build -t api-whatsweb .
 
 .PHONY: dev

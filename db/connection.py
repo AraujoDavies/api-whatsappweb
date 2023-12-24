@@ -5,4 +5,4 @@ from sqlalchemy import create_engine
 
 load_dotenv()
 
-engine = create_engine(getenv('DATABASE_URI'))
+engine = create_engine(getenv('DB_DEFAULT'))

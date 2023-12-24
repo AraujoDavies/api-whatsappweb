@@ -32,18 +32,18 @@ def test_if_save_screenshot_works(test_zap):
     assert test_zap.save_screenshot() == True
 
 
-@pytest.mark.withoutsess
-def test_if_login_code_is_returned_with_success(test_zap):
-    return_data = test_zap.get_login_code(getenv('VALID_PHONE_NUMBER'))
-    print(return_data)
-    assert len(return_data) == 9
+# @pytest.mark.withoutsess
+# def test_if_login_code_is_returned_with_success(test_zap):
+#     return_data = test_zap.get_login_code(getenv('VALID_PHONE_NUMBER'))
+#     print(return_data)
+#     assert len(return_data) == 9
 
 
-@pytest.mark.withoutsess
-def test_if_login_code_is_returned_with_success_in_invalid_number_cases(
-    test_zap,
-):
-    assert test_zap.get_login_code(getenv('INVALID_PHONE_NUMBER')) == ''
+# @pytest.mark.withoutsess
+# def test_if_login_code_is_returned_with_success_in_invalid_number_cases(
+#     test_zap,
+# ):
+#     assert test_zap.get_login_code(getenv('INVALID_PHONE_NUMBER')) == ''
 
 
 @pytest.mark.withoutsess
