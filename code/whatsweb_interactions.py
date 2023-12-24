@@ -254,6 +254,8 @@ class WhatsWebAPI:
                 '//div[@title="Caixa de texto de pesquisa"]//p[contains(@class, "selectable-text")]',
                 wait_time=60,
             )
+            if search_bar is False:   # se ainda é falso
+                return 'Search bar not found.'
 
         search_bar_sel = driver.driver.find_element(
             'xpath',

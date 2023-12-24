@@ -70,9 +70,14 @@ def browsers_in_execution():
 @app.post('/find-chat')
 def find_chat(body_find_chat: FindChat):
     if body_find_chat.phone_number in browsers.keys():
-        return browsers[body_find_chat.phone_number].find_chat(
+        find_chat_response = browsers[body_find_chat.phone_number].find_chat(
             body_find_chat.chat_name
         )
+
+        if find_chat_response == 'Search bar not found.':
+            return f'Are you scanned the QRCODE ? see: /screenshot?phone_number={body_find_chat.phone_number}'
+
+        return find_chat_response
     return 'Browser is not instanciated'
 
 

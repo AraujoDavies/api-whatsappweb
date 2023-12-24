@@ -7,5 +7,7 @@ services:
     volumes:
       - ./profiles:/app/profiles
       - ./prints:/app/prints
+      - ./.env:/app/.env
+      - ./code/whatsweb_interactions.py:/app/code/whatsweb_interactions.py
     ports:
       - 8000:80
