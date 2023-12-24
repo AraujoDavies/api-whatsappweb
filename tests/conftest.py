@@ -14,12 +14,12 @@ logging.basicConfig(
 
 load_dotenv()
 
-headless_choose = True   # True | False
+headless_choose = False   # True | False
 app_on = WhatsWebAPI(
-    1, getenv('VALID_PROFILE_PATH'), headless=headless_choose
+    getenv('VALID_PHONE_NUMBER'), headless=headless_choose
 )   # in this we need to scan QRCODE
 app_off = WhatsWebAPI(
-    1, headless=headless_choose
+    getenv('INVALID_PHONE_NUMBER'), headless=headless_choose
 )   # start browser without QRCODE session
 
 

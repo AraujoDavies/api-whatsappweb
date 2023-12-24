@@ -36,8 +36,12 @@ git: ## MSG - Sobe codigo pro GIT (Necessario usar variavel)
 
 .PHONY: test
 test:
-	poetry run pytest . -x -s --cov=code -vv --disable-warnings ${p}
+	poetry run pytest . -x -s --cov=code -vv --disable-warnings
 	poetry run coverage html
+
+.PHONY: mark-test
+mark-test:
+	poetry run pytest . -x -s --cov=code -vv --disable-warnings -m ${m}
 
 .PHONY: docs
 docs:
@@ -57,6 +61,10 @@ dev: ## Start Container em modo iterativo
 # 	docker run -ti -v ${PWD}/:/app api-whatsweb:dev /bin/bash
 # # pip install -r requirements.txt
 # # uvicorn --app-dir /app/code main:app --host 0.0.0.0 --port 80
+
+.PHONY: fast
+fast:
+	poetry run uvicorn --app-dir $(CURDIR)/code main:app --reload
 
 .PHONY: up
 up: # make run-docker v=123

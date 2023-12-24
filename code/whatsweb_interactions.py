@@ -1,11 +1,10 @@
 import logging
-from datetime import datetime
 from os import getenv, listdir, mkdir, remove
 from time import sleep
 
+from helpers import clean_input_field, paste_content
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
-from selenium_helpers import clean_input_field, paste_content
 from splinter import Browser
 from splinter.exceptions import ElementDoesNotExist
 from webdriver_manager.chrome import ChromeDriverManager
@@ -16,12 +15,12 @@ class WhatsWebAPI:
     This class contains all whatsapp web actions that project will do.
     """
 
-    def __init__(self, user_id: int = 0, profile: str = 'NA', headless=True):
+    def __init__(self, user_phone_number: int = 0, headless=True):
         """
         Class Vars.
 
         Args:
-            user_id (_int_): ID to identify user and save logs.
+            user_phone_number (_int_): ID to identify user and save logs.
 
             profile (_str_): Where data is saved to keep Whatsapp working all the time.
 
@@ -29,11 +28,15 @@ class WhatsWebAPI:
 
         """
         self.headless = headless
-        self.profile = profile
-        self.user_id = user_id
+        self.profile = getenv('VALID_PROFILE_PATH') + f'/{user_phone_number}'
+        self.user_phone_number = user_phone_number
         self.driver_state = 'Not started'
         self.driver = []
         self.url = getenv('URL_WHATSAPP')
+        try:
+            mkdir(self.profile)
+        except:
+            print(f'dir already exists: {user_phone_number}')
 
     def run_browser(self) -> str:
         """
@@ -133,13 +136,13 @@ class WhatsWebAPI:
             if len(self.driver) != 1:
                 return 'Chrome is closed'
             driver = self.driver[0]
-            user_id = self.user_id
-            filename = f'user_{user_id}_date_{str(datetime.now().timestamp()).split(".")[0]}.png'
+            user_phone_number = self.user_phone_number
+            filename = f'user_{user_phone_number}.png'
 
             try:
                 for file in listdir('./prints/'):
                     print(file)
-                    if f'user_{user_id}_' in file:
+                    if f'user_{user_phone_number}_' in file:
                         remove('./prints/' + file)
             except:
                 mkdir('prints')
@@ -249,7 +252,7 @@ class WhatsWebAPI:
             sleep(5)
             search_bar = driver.is_element_present_by_xpath(
                 '//div[@title="Caixa de texto de pesquisa"]//p[contains(@class, "selectable-text")]',
-                wait_time=15,
+                wait_time=60,
             )
 
         search_bar_sel = driver.driver.find_element(
@@ -271,7 +274,7 @@ class WhatsWebAPI:
 
             return 'Chat found.'
         except Exception as error:
-            # CHAT NÃO ENCONTRADO
+            # CHAT NOT FOUND
             logging.error(error)
             if 'no elements could be found with xpath "//span[@title=' in str(
                 error

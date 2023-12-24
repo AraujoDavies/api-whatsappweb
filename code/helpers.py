@@ -52,3 +52,30 @@ arguments[0].dispatchEvent(event)
 """,
         el,
     )
+
+
+import re
+
+
+def validate_number(number: str):
+    """
+    Accept only character beetwen 0 and 9
+
+    Args:
+        number (str): some string - input by user.
+
+    Returns:
+        _bool_: True if only numbers or False if contain other character.
+
+    Examples:
+        >>> validate_number("123456")
+        True
+        >>> validate_number("987654")
+        True
+        >>> validate_number("abc123")
+        False
+        >>> validate_number("12 34 56")
+        False
+    """
+    padrao = re.compile(r'^\d+$')
+    return bool(padrao.match(number))
