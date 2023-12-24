@@ -1,0 +1,11 @@
+version: '3'
+services:
+  api-whatsweb:
+    container_name: api-whatsweb
+    image: api-whatsweb:latest
+    restart: always
+    volumes:
+      - ./profiles:/app/profiles
+      - ./prints:/app/prints
+    ports:
+      - 8000:80

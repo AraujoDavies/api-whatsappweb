@@ -50,7 +50,7 @@ docs:
 .PHONY: build
 build: # make build v=1 - remember to adjust image version in compose.yml
 	poetry export -o requirements.txt
-	docker build -t api-whatsweb:dev .
+	docker build -t api-whatsweb .
 
 .PHONY: dev
 dev: ## Start Container em modo iterativo
