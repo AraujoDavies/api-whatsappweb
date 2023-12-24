@@ -42,8 +42,9 @@ def stop_browser(
     # token: Union[str, None] = 'WITHOUT TOKEN'
 ):
     if phone_number in browsers.keys():
+        kill = browsers[phone_number].kill_browser()
         browsers.pop(phone_number)
-        return browsers[phone_number].kill_browser()
+        return kill
 
     return 'Browser is not instanciated'
 
