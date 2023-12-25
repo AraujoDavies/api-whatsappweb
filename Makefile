@@ -42,7 +42,7 @@ test:
 
 .PHONY: mark-test
 mark-test:
-	poetry run pytest . -x -s --cov=code -vv --disable-warnings -m ${m}
+	poetry run pytest . -x -s --cov=code -vv -m ${m}
 
 .PHONY: docs
 docs:

@@ -27,6 +27,11 @@ def test_if_is_possible_open_two_instances(test_zap):
 
 
 @pytest.mark.withoutsess
+def test_if_return_search_bar_not_found_in_qrcode_screen(test_zap):
+    assert test_zap.find_chat('Sla') == 'Search bar not found.'
+
+
+@pytest.mark.withoutsess
 def test_if_save_screenshot_works(test_zap):
     test_zap.driver[0].visit('https://docs.python.org/3/')
     assert test_zap.save_screenshot() == True
