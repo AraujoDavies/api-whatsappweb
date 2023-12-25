@@ -2,7 +2,7 @@ import logging
 from os import getenv, listdir, mkdir, remove
 from time import sleep
 
-from helpers import clean_input_field, paste_content
+from helpers import clean_input_field, paste_content, send_message_by_selenium
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from splinter import Browser
@@ -154,76 +154,6 @@ class WhatsWebAPI:
         except Exception as error:
             return error
 
-    # def get_login_code(self, phone_number: str) -> str | Exception:
-    #     """
-    #     Get login code using a phone number.
-
-    #     Args:
-    #         phone_number (_str_): [countrycode][areacode][number]
-
-    #     Return:
-    #         code to login | Exception
-
-    #     Examples:
-    #         >>> app = WhatsWebAPI()
-    #         <whatsweb_interactions.WhatsWebAPI at 0x1231c879f50>
-    #         >>> zap.get_login_code('5511987654321')
-    #         'P8FD-8K92'
-    #         >>> zap.get_login_code('5511987654321')
-    #         'B7Z3-DDX9'
-    #     """
-    #     try:
-    #         driver = self.driver[0]
-    #         url = self.url
-    #         driver.visit(url)
-
-    #         btn_conectar_com_numero = '//span[@role="button"]'
-    #         driver.is_element_present_by_xpath(
-    #             btn_conectar_com_numero, wait_time=15
-    #         )
-    #         driver.find_by_xpath(btn_conectar_com_numero).first.click()
-
-    #         input_whastsapp_number = (
-    #             '//input[@aria-label="Type your phone number."]'
-    #         )
-    #         input_whastsapp_number = (
-    #             '//input[@aria-label="Insira seu número de telefone."]'
-    #         )
-    #         driver.is_element_present_by_xpath(
-    #             input_whastsapp_number, wait_time=15
-    #         )
-
-    #         input_whastsapp_number_sel = driver.driver.find_element(
-    #             'xpath', input_whastsapp_number
-    #         )
-    #         input_whastsapp_number = driver.find_by_xpath(
-    #             input_whastsapp_number
-    #         ).first
-
-    #         result_clean_input = clean_input_field(
-    #             driver=driver.driver, input_element=input_whastsapp_number_sel
-    #         )
-
-    #         if result_clean_input is False:
-    #             # error to clean input
-    #             return 'Fail to clean input field - see logging'
-
-    #         input_whastsapp_number.fill('+' + phone_number)
-
-    #         btn_avancar = '//div[@role="button"]'
-    #         driver.find_by_xpath(btn_avancar).first.click()
-
-    #         code_to_login = '//div[@aria-details="link-device-phone-number-code-screen-instructions"]//span'
-    #         letters = driver.find_by_xpath(code_to_login)
-    #         code_string = [letter.text for letter in letters]
-    #         code = ''
-    #         for some_letter in code_string:
-    #             code += some_letter
-
-    #         return code
-    #     except Exception as error:
-    #         return error
-
     def find_chat(self, chat_name: str) -> str | Exception:
         """
         fill search bar input for find some chat to send message.
@@ -312,7 +242,11 @@ class WhatsWebAPI:
                 paste_content(driver.driver, input_message, message)
             else:
                 try:
-                    input_message.send_keys(message)   # if characters error
+                    send_message_by_selenium(
+                        driver.driver,
+                        input_message,
+                        message,
+                    )
                 except:
                     paste_content(driver.driver, input_message, message)
 
@@ -332,3 +266,73 @@ class WhatsWebAPI:
                 return 'Message failed - input is empty'
         except Exception as error:
             return error
+
+    # def get_login_code(self, phone_number: str) -> str | Exception:
+    #     """
+    #     Get login code using a phone number.
+
+    #     Args:
+    #         phone_number (_str_): [countrycode][areacode][number]
+
+    #     Return:
+    #         code to login | Exception
+
+    #     Examples:
+    #         >>> app = WhatsWebAPI()
+    #         <whatsweb_interactions.WhatsWebAPI at 0x1231c879f50>
+    #         >>> zap.get_login_code('5511987654321')
+    #         'P8FD-8K92'
+    #         >>> zap.get_login_code('5511987654321')
+    #         'B7Z3-DDX9'
+    #     """
+    #     try:
+    #         driver = self.driver[0]
+    #         url = self.url
+    #         driver.visit(url)
+
+    #         btn_conectar_com_numero = '//span[@role="button"]'
+    #         driver.is_element_present_by_xpath(
+    #             btn_conectar_com_numero, wait_time=15
+    #         )
+    #         driver.find_by_xpath(btn_conectar_com_numero).first.click()
+
+    #         input_whastsapp_number = (
+    #             '//input[@aria-label="Type your phone number."]'
+    #         )
+    #         input_whastsapp_number = (
+    #             '//input[@aria-label="Insira seu número de telefone."]'
+    #         )
+    #         driver.is_element_present_by_xpath(
+    #             input_whastsapp_number, wait_time=15
+    #         )
+
+    #         input_whastsapp_number_sel = driver.driver.find_element(
+    #             'xpath', input_whastsapp_number
+    #         )
+    #         input_whastsapp_number = driver.find_by_xpath(
+    #             input_whastsapp_number
+    #         ).first
+
+    #         result_clean_input = clean_input_field(
+    #             driver=driver.driver, input_element=input_whastsapp_number_sel
+    #         )
+
+    #         if result_clean_input is False:
+    #             # error to clean input
+    #             return 'Fail to clean input field - see logging'
+
+    #         input_whastsapp_number.fill('+' + phone_number)
+
+    #         btn_avancar = '//div[@role="button"]'
+    #         driver.find_by_xpath(btn_avancar).first.click()
+
+    #         code_to_login = '//div[@aria-details="link-device-phone-number-code-screen-instructions"]//span'
+    #         letters = driver.find_by_xpath(code_to_login)
+    #         code_string = [letter.text for letter in letters]
+    #         code = ''
+    #         for some_letter in code_string:
+    #             code += some_letter
+
+    #         return code
+    #     except Exception as error:
+    #         return error

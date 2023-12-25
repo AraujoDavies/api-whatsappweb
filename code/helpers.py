@@ -1,4 +1,5 @@
 import logging
+import re
 
 from selenium.webdriver import ActionChains, Keys
 
@@ -54,9 +55,6 @@ arguments[0].dispatchEvent(event)
     )
 
 
-import re
-
-
 def validate_number(number: str):
     """
     Accept only character beetwen 0 and 9
@@ -79,3 +77,39 @@ def validate_number(number: str):
     """
     padrao = re.compile(r'^\d+$')
     return bool(padrao.match(number))
+
+
+def send_message_by_selenium(driver, input_element, message: str) -> bool:
+    """
+    Send message by selenium event.
+
+    Args:
+        driver: selenium web driver
+
+        input_element (_seleniumWebElement_): input field, shoud be selenium web element, where we will click to start to send message.
+
+        message: some text.
+
+    Return:
+        process_run (_bool_): True | False
+    """
+    try:
+        actions = ActionChains(driver)
+
+        actions.move_to_element(input_element)
+        message = message.replace('\n', '¨')
+        for letra in message:
+            if letra != '¨':
+                actions.key_down(letra)
+                actions.key_up(letra)
+            else:
+                actions.key_down(Keys.SHIFT)
+                actions.key_down(Keys.ENTER)
+                actions.key_up(Keys.ENTER)
+                actions.key_up(Keys.SHIFT)
+
+        actions.perform()
+        return True
+    except Exception as error:
+        logging.critical(error)
+        return False
