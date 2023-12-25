@@ -4,8 +4,9 @@ htmlcov/
 .coverage 
 .pytest_cache/ 
 profiles/
-.env
 *.png
 mysql-data/
 profiles/
 *.log
+flash_whatsapp/
+db/
