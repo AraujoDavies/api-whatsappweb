@@ -29,11 +29,11 @@ format: ## formata o script e ordena os imports
 .PHONY: git
 git: ## MSG - Sobe codigo pro GIT (Necessario usar variavel)
 	@make format
-# @make test
+	@make test
 	git add -A
 	git restore --staged .env 
 	git commit -m "${MSG}"
-# git push -u origin main
+	git push -u origin main
 
 .PHONY: test
 test:
