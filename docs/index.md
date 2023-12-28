@@ -6,14 +6,6 @@
 > dependencies:
 
     Docker.
-
-> Configure ENV file.
-
-In .env file SET 3 ENVS to avoid error **(USE ABSOLUTE PATH)**:
-
-    VALID_PROFILE_PATH = # where storage chrome session
-    VALID_PRINTS_PATH = # where storage prints 
-    VALID_PHONE_NUMBER = # country_code + area_code + phone_number 
     
 > Commands to run: (adjust port in compose.yml => default value is 80)
 
