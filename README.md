@@ -1,6 +1,3 @@
-![Logo_do_projeto](assets/logo.png){width=300 .center} <!--{chaves} não funcionam por padrão, necessário usar o markdow_extensions-->
-
-
 ### HOW TO RUN
 
 > dependencies:
@@ -9,16 +6,19 @@
 
 > Configure ENV file.
 
-In .env file SET 3 ENVS to avoid error **(USE ABSOLUTE PATH)**:
-
-    VALID_PROFILE_PATH = # where storage chrome session
-    VALID_PRINTS_PATH = # where storage prints 
-    VALID_PHONE_NUMBER = # country_code + area_code + phone_number 
     
 > Commands to run: (adjust port in compose.yml => default value is 80)
 
     git clone https://github.com/AraujoDavies/api-whatsappweb.git
     
+In .env file SET 3 ENVS to avoid error **(USE ABSOLUTE PATH)**:
+
+    VALID_PROFILE_PATH = # where storage chrome session
+    VALID_PRINTS_PATH = # where storage prints 
+    VALID_PHONE_NUMBER = # country_code + area_code + phone_number 
+
+Build image and run container:
+
     docker build -t api-whatsweb .
     
     docker compose up -d
