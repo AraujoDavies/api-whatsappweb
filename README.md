@@ -4,18 +4,20 @@
 
     Docker.
 
-> Configure ENV file.
-
-    
 > Commands to run: (adjust port in compose.yml => default value is 80)
 
     git clone https://github.com/AraujoDavies/api-whatsappweb.git
     
 In .env file SET 3 ENVS to avoid error **(USE ABSOLUTE PATH)**:
 
+    Required:
     VALID_PROFILE_PATH = # where storage chrome session
     VALID_PRINTS_PATH = # where storage prints 
+
+    Optional: (ENV used in tests)
     VALID_PHONE_NUMBER = # country_code + area_code + phone_number 
+
+> Configure ENV file.
 
 Build image and run container:
 
