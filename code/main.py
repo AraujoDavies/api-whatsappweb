@@ -1,4 +1,4 @@
-from os import getenv
+from os import getenv, mkdir
 
 from dotenv import load_dotenv
 
@@ -6,15 +6,19 @@ load_dotenv()
 
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from whatsweb_interactions import WhatsWebAPI
 
 app = FastAPI()
 
 from views import *
 
 # mount to use static files.
-app.mount('/screenshot', StaticFiles(directory='prints'), name='prints')
+app.mount(
+    '/screenshot',
+    StaticFiles(directory=getenv('VALID_PRINTS_PATH')),
+    name='prints',
+)
 
+# from whatsweb_interactions import WhatsWebAPI
 # if __name__ == '__main__':
 # zap = WhatsWebAPI(5511942280030, getenv('VALID_PROFILE_PATH'), headless=False)
 # zap = WhatsWebAPI(getenv('VALID_PHONE_NUMBER'), headless=True)

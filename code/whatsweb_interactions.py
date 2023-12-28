@@ -35,8 +35,8 @@ class WhatsWebAPI:
         self.url = getenv('URL_WHATSAPP')
         try:
             mkdir(self.profile)
-        except:
-            print(f'dir already exists: {user_phone_number}')
+        except Exception as error:
+            print(f'already exists or not located -> {self.profile}')
 
     def run_browser(self) -> str:
         """

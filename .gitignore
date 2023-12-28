@@ -3,10 +3,12 @@ pass.env
 htmlcov/ 
 .coverage 
 .pytest_cache/ 
-profiles/
 *.png
 mysql-data/
-profiles/
 *.log
 flash_whatsapp/
 db/
+profiles/*
+!profiles/*.md
+prints/*
+!prints/*.md

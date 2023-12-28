@@ -5,7 +5,7 @@ repo_uri: tree/main/docs
 
 theme:
   name: material
-  language: pt-br
+  language: pt-BR
   logo: assets/logo.png
   favicon: assets/logo.png
 
