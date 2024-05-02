@@ -12,3 +12,4 @@ profiles/*
 !profiles/*.md
 prints/*
 !prints/*.md
+.my_env

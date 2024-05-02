@@ -15,18 +15,26 @@ Porém a ideia final é subir em ECS ou LAMBDA, armazenando a persitência em um
 
 ## Métodos da API
 
-- **Login:**
+- **start:**
     
-    A forma de login DEFAULT será por meio do código, ou seja, sem QRCODE code nesse método.
+    Cria um perfil do chrome caso ele não exista e inicia o navegador.
+
+- **stop:**
+    
+    fecha o navegador
 
 - **Screenshot:**
 
     Faz uma captura do browser q estará em segundo plano. Esse método é pensado para debug, porém se estiver na tela do QRCODE, pode ser usado como login.
 
-- **send_messsage:**
+- **browsers:**
 
-    Envia a mensagem em um determinando chat.
+    retorna um array com todas sessões do chrome ativas.
 
-- **healthcheck:**
+- **find-chat:**
 
-    Verifica se o browser está saudável e se usuário está conectado.
+    procura por um chat usando o campo de busca do whatsapp.
+
+- **send-message:**
+
+    Envia a mensagem passada por parametro em um chat. Depende que o chat seja encontrado pelo find-chat.
