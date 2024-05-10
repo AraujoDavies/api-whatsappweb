@@ -11,5 +11,7 @@ services:
       # - ./code/whatsweb_interactions.py:/app/code/whatsweb_interactions.py # DEBUG
     environment:
       - TZ=America/Sao_Paulo
+      - VALID_PROFILE_PATH=/app/profiles
+      - VALID_PRINTS_PATH=/app/prints
     ports:
       - 8000:80

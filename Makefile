@@ -29,7 +29,6 @@ format: ## formata o script e ordena os imports
 .PHONY: git
 git: ## MSG - Sobe codigo pro GIT (Necessario usar variavel)
 	@make format
-	@make test
 	git add -A
 	git restore --staged .env 
 	git commit -m "${MSG}"
@@ -70,4 +69,13 @@ fast:
 
 .PHONY: up
 up: # make run-docker v=123
+	docker compose down
 	docker compose up -d
+
+.PHONY: logs
+logs: # make run-docker v=123
+	docker compose logs --follow
+
+.PHONY: down
+down: # make run-docker v=123
+	docker compose down

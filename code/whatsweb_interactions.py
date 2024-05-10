@@ -2,12 +2,15 @@ import logging
 from os import getenv, listdir, mkdir, remove
 from time import sleep
 
+from dotenv import load_dotenv
 from helpers import clean_input_field, paste_content, send_message_by_selenium
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from splinter import Browser
 from splinter.exceptions import ElementDoesNotExist
 from webdriver_manager.chrome import ChromeDriverManager
+
+load_dotenv()
 
 
 class WhatsWebAPI:
@@ -171,7 +174,7 @@ class WhatsWebAPI:
         driver = self.driver[0]
         # verifica se a barra está na tela
         search_bar = driver.is_element_present_by_xpath(
-            '//div[@title="Caixa de texto de pesquisa"]//p[contains(@class, "selectable-text")]',
+            getenv('CAIXA_DE_PESQUISA'),
             wait_time=5,
         )
 
@@ -181,7 +184,7 @@ class WhatsWebAPI:
             driver.visit(url)
             sleep(5)
             search_bar = driver.is_element_present_by_xpath(
-                '//div[@title="Caixa de texto de pesquisa"]//p[contains(@class, "selectable-text")]',
+                getenv('CAIXA_DE_PESQUISA'),
                 wait_time=60,
             )
             if search_bar is False:   # se ainda é falso
@@ -189,14 +192,12 @@ class WhatsWebAPI:
 
         search_bar_sel = driver.driver.find_element(
             'xpath',
-            '//div[@title="Caixa de texto de pesquisa"]//p[contains(@class, "selectable-text")]',
+            getenv('CAIXA_DE_PESQUISA'),
         )
         clean_input_field(driver=driver.driver, input_element=search_bar_sel)
 
         try:
-            find_chat = driver.find_by_xpath(
-                '//div[@title="Caixa de texto de pesquisa"]//p[contains(@class, "selectable-text")]'
-            ).first
+            find_chat = driver.find_by_xpath(getenv('CAIXA_DE_PESQUISA')).first
 
             find_chat.fill(chat_name)
 
@@ -233,7 +234,7 @@ class WhatsWebAPI:
         try:
             driver = self.driver[0]
             input_message = driver.driver.find_element(
-                'xpath', '//div[@title="Digite uma mensagem"]'
+                'xpath', getenv('CAIXA_MENSAGEM')
             )   # //p[contains(@class, "selectable-text")]')
 
             clean_input_field(driver.driver, input_message)
@@ -259,7 +260,7 @@ class WhatsWebAPI:
                 ...
 
             try:
-                send_btn = driver.find_by_xpath('//span[@data-icon="send"]')
+                send_btn = driver.find_by_xpath(getenv('BOTAO_ENVIAR'))
                 send_btn.click()
                 return 'Message sended'
             except ElementDoesNotExist as e:

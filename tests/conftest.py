@@ -14,7 +14,7 @@ logging.basicConfig(
 
 load_dotenv()
 
-headless_choose = False   # True | False
+headless_choose = True   # True | False
 app_on = WhatsWebAPI(
     getenv('VALID_PHONE_NUMBER'), headless=headless_choose
 )   # in this we need to scan QRCODE
