@@ -13,5 +13,8 @@ services:
       - TZ=America/Sao_Paulo
       - VALID_PROFILE_PATH=/app/profiles
       - VALID_PRINTS_PATH=/app/prints
+      - CAIXA_DE_PESQUISA='//div[@aria-label="Caixa de texto de pesquisa"]//p[contains(@class, "selectable-text")]'
+      - CAIXA_MENSAGEM='//div[@aria-label="Digite uma mensagem"]'
+      - BOTAO_ENVIAR='//span[@data-icon="send"]'
     ports:
       - 8000:80
