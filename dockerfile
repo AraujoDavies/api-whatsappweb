@@ -4,7 +4,7 @@ COPY . /app
 WORKDIR /app
 
 # Download the Chrome Driver - maybe's need to fix this url
-RUN wget https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/119.0.6045.105/linux64/chromedriver-linux64.zip
+RUN wget https://storage.googleapis.com/chrome-for-testing-public/133.0.6943.53/linux64/chromedriver-linux64.zip
 
 # install python dependecies
 RUN pip install --upgrade pip

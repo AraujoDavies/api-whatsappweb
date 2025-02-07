@@ -69,9 +69,9 @@ class WhatsWebAPI:
                 browser_options.add_argument('--no-sandbox')
                 browser_options.add_argument('--disable-dev-shm-usage')
                 # optins above is to fix message => whatsapp work with google chrome 60+
-                browser_options.add_argument(
-                    'user-agent=User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36'
-                )
+                # browser_options.add_argument(
+                  #  'user-agent=User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36'
+                # )
                 browser_prefs = {}
                 browser_options.experimental_options['prefs'] = browser_prefs
                 browser_prefs['profile.default_content_settings'] = {
@@ -81,10 +81,10 @@ class WhatsWebAPI:
             if profile != 'NA':
                 browser_options.add_argument(f'user-data-dir={profile}')
 
-            service = Service(ChromeDriverManager().install())
+            # service = Service(ChromeDriverManager().install())
 
             driver = Browser(
-                'chrome', options=browser_options, service=service
+                'chrome', options=browser_options # , service=service
             )
             self.driver.append(driver)
 
@@ -337,3 +337,8 @@ class WhatsWebAPI:
     #         return code
     #     except Exception as error:
     #         return error
+
+
+if __name__ == '__main__':
+    zap = WhatsWebAPI(1)
+    a = zap.run_browser()
