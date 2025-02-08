@@ -17,4 +17,4 @@ services:
       - CAIXA_MENSAGEM=//div[@aria-label="Digite uma mensagem"]
       - BOTAO_ENVIAR=//span[@data-icon="send"]
     ports:
-      - 8000:80
+      - 8910:80
