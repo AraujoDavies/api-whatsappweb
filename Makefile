@@ -79,3 +79,7 @@ logs: # make run-docker v=123
 .PHONY: down
 down: # make run-docker v=123
 	docker compose down
+
+.PHONY: req
+req:
+	poetry export -o requirements.txt --without-hashes
