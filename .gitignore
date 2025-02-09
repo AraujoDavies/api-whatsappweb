@@ -13,3 +13,4 @@ profiles/*
 prints/*
 !prints/*.md
 .my_env
+pass.env

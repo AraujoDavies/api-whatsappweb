@@ -15,9 +15,9 @@ logging.basicConfig(
   format='%(asctime)s - %(levelname)s: %(message)s',
 )
 
-load_dotenv()
-engine = create_engine(os.getenv('DATABASE_URI'))
-
+load_dotenv('pass.env')
+engine = create_engine(os.getenv('DATABASE_URI_PROD'))
+# print(os.getenv('DATABASE_URI_PROD'))
 
 def envio(chat_name, mensagem):
   # abrir whatsapp -> Response: Browser is open OR browser already running
@@ -51,19 +51,25 @@ def envio(chat_name, mensagem):
 
 def flash_diario():
   with engine.begin() as conn:
-      data = conn.execute(text('SELECT * FROM academia.flash;')).fetchall()
-
+    data = conn.execute(text('CALL proc_flash_whats_pinbet;')).fetchall()
   df = pd.DataFrame(data)
 
-  mensagem = '*Flash diário*\n\n'
-  for index in df.index:
-      for col in df.columns:
-          mensagem += f"{col}: {df[col][index]}\n"
-      mensagem += '\n'
+  try:
+    mensagem = '*Flash diário*\n\n'
+    for index in df.index:
+        for col in df.columns:
+            mensagem += f"{col}: {df[col][index]}\n"
+        mensagem += '\n'
+  except:
+    mensagem = 'Falha na QUERY'
 
   CHAT_NAME = 'Sla'
-  for i in range(5):
-    enviado = envio(CHAT_NAME, mensagem)
+  for i in range(2):
+    try:
+      enviado = envio(CHAT_NAME, mensagem)
+    except:
+       enviado = 'EXCEPT'
+
     if enviado == "SUCESSO": 
       break
   
@@ -72,9 +78,8 @@ def flash_diario():
 
 # envios schedulados
 flash_diario()
-
 schedule.every(2).hours.do(flash_diario)
 
 while True:
     schedule.run_pending()
-    time.sleep(1)
+    time.sleep(10)
