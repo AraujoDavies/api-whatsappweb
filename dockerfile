@@ -23,7 +23,7 @@ RUN apt-get -y update
 RUN apt-get install -y google-chrome-stable
 
 # Installing Unzip
-RUN apt-get install -yqq unzip
+RUN apt-get install -y unzip
 
 # Unzip the Chrome Driver into /usr/local/bin directory
 RUN unzip chromedriver-linux64.zip -d /usr/local/bin
@@ -31,4 +31,4 @@ RUN unzip chromedriver-linux64.zip -d /usr/local/bin
 # Set display port as an environment variable
 # ENV DISPLAY=:99
 
-CMD ["uvicorn", "--app-dir", "/app/code", "main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "--app-dir", "/app/code", "main:app", "--host", "0.0.0.0", "--port", "8910"]

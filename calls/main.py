@@ -51,7 +51,7 @@ def envio(chat_name, mensagem):
 
 def flash_diario():
   with engine.begin() as conn:
-    data = conn.execute(text('CALL proc_flash_whats_pinbet;')).fetchall()
+    data = conn.execute(text(os.getenv('INSTRUCAO_SQL'))).fetchall()
   df = pd.DataFrame(data)
 
   try:
@@ -63,7 +63,8 @@ def flash_diario():
   except:
     mensagem = 'Falha na QUERY'
 
-  CHAT_NAME = 'Sla'
+  logging.warning(mensagem[:20])
+  CHAT_NAME = os.getenv('CHAT_NAME')
   for i in range(2):
     try:
       enviado = envio(CHAT_NAME, mensagem)
