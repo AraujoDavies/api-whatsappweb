@@ -18,3 +18,17 @@ services:
       - BOTAO_ENVIAR=//span[@data-icon="send"]
     ports:
       - 8910:80
+
+  api-calls:
+    container_name: api-calls
+    image: python:3.11.10
+    restart: always
+    volumes:
+      - ./calls/:/calls/
+      - ./requirements.txt:/requirements.txt
+    env_file:
+      - pass.env
+    environment:
+      - TZ=America/Sao_Paulo
+    command: bash -c "pip install -r requirements.txt && python calls/main.py"
+    # command: bash -c "pip install requests && python app/bonus_news.py"
