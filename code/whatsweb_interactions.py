@@ -1,5 +1,5 @@
 import logging
-from os import getenv, listdir, mkdir, remove
+from os import getenv, listdir, mkdir, remove, getcwd, sep
 from time import sleep
 
 from dotenv import load_dotenv
@@ -31,7 +31,7 @@ class WhatsWebAPI:
 
         """
         self.headless = headless
-        self.profile = getenv('VALID_PROFILE_PATH') + f'/{user_phone_number}'
+        self.profile = getcwd() + sep + 'profiles' + sep + str(user_phone_number)
         self.user_phone_number = user_phone_number
         self.driver_state = 'Not started'
         self.driver = []
@@ -64,6 +64,7 @@ class WhatsWebAPI:
             profile = self.profile
 
             browser_options = Options()
+            browser_options.add_argument("--force-device-scale-factor=0.8")
             if headless is True:
                 browser_options.add_argument('--headless')
                 browser_options.add_argument('--no-sandbox')
@@ -267,6 +268,21 @@ class WhatsWebAPI:
                 return 'Message failed - input is empty'
         except Exception as error:
             return error
+
+
+    def skip_errors(self) -> None:
+        """Pula mensagens do whatsapp."""
+        driver = self.driver[0]
+
+        try:
+            continuar = driver.find_by_text('Continuar').first # "o whats está de cara nova..."
+            continuar.click()
+            logging.warning('msg: "o whats está de cara nova..."')
+        except:
+            logging.warning('Não encontrou btn "continuar" para msg: "o whats está de cara nova..."')
+            pass
+        
+        return None
 
     # def get_login_code(self, phone_number: str) -> str | Exception:
     #     """

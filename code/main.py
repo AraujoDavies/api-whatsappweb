@@ -1,4 +1,4 @@
-from os import getenv, mkdir
+from os import getenv, mkdir, getcwd, sep
 
 from dotenv import load_dotenv
 
@@ -11,10 +11,11 @@ app = FastAPI()
 
 from views import *
 
+VALID_PRINTS_PATH = getcwd() + sep + 'prints'
 # mount to use static files.
 app.mount(
     '/screenshot',
-    StaticFiles(directory=getenv('VALID_PRINTS_PATH')),
+    StaticFiles(directory=VALID_PRINTS_PATH),
     name='prints',
 )
 

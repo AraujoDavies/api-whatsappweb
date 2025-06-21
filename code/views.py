@@ -87,3 +87,12 @@ def find_chat(body: SendMessage):
     if body.phone_number in browsers.keys():
         return browsers[body.phone_number].send_message(body.message)
     return 'Browser is not instanciated'
+
+
+@app.get('/skip-errors')
+def skip_erros(phone_number: Union[str, None] = None,):
+    if phone_number in browsers.keys():
+        browsers[phone_number].skip_errors()
+        return 'Feito!'
+
+    return 'Browser is not instanciated'
