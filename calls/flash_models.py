@@ -102,15 +102,15 @@ Saque afiliado: {dict_helper['Saque afiliado']}
 
 ----
 
-TOTAL Cadastros do dia : {dict_helper['TOTAL Cadastros do dia']}  ({dict_helper['Taxa de conversão']}) Taxa conversão FTD
+TOTAL Cadastros do dia : {dict_helper['TOTAL Cadastros do dia']}  ({dict_helper['Taxa de conversão']}) Taxa conversão FTD Dia
 
 -----
 
-*FTD Total QTD* {dict_helper['FTD Total QTD']}
+*Total Depositantes* {dict_helper['FTD Total QTD']}
 FTD DIA QTD: {dict_helper['FTD DIA QTD']} ({dict_helper['FTD DIA %']})
 FTD RETENÇÃO QTD: {dict_helper['FTD RETENÇÃO QTD']} ({dict_helper['FTD RETENÇÃO %']})
 
-*FTD DEP TOTAL* {dict_helper['FTD Total VR']}
+*Total Depósito Dia* {dict_helper['FTD Total VR']}
 FTD DIA DEP: {dict_helper['FTD DIA VR']} ({dict_helper['FTD DIA VR %']})
 FTD RETENÇÃO DEP: {dict_helper['FTD RETENÇÃO VR']} ({dict_helper['FTD RETENÇÃO VR %']})
 
