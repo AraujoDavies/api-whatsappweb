@@ -26,10 +26,9 @@ def flash_padrao(comando_sql: str, flash_title: str = "FLASH ...", chat_name: st
     logging.warning('flash_padrao (%s): %s', chat_name, enviado) 
 
 
-def flash_personalizado_pinbet():
-    chat_name = 'Flash Pinbet'
+def flash_personalizado_weebet(chat_name: str, comando_sql: str):
     with engine.connect() as conn:
-        result = conn.execute(text("CALL proc_flash_whatsapp_15min;")).fetchall()
+        result = conn.execute(text(comando_sql)).fetchall()
 
     dict_helper = {}
     parametros_monetarios = [
@@ -55,6 +54,7 @@ def flash_personalizado_pinbet():
         "FTD RETENÇÃO %",
         "FTD DIA VR %",
         "FTD RETENÇÃO VR %",
+        "Taxa de conversão",
     ]
     parametros_inteiros = [
         "FTD RETENÇÃO QTD",
@@ -102,7 +102,7 @@ Saque afiliado: {dict_helper['Saque afiliado']}
 
 ----
 
-TOTAL Cadastros do dia : {dict_helper['TOTAL Cadastros do dia']}
+TOTAL Cadastros do dia : {dict_helper['TOTAL Cadastros do dia']}  ({dict_helper['Taxa de conversão']}) Taxa conversão FTD
 
 -----
 

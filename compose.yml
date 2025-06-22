@@ -20,7 +20,6 @@ services:
   api-calls:
     container_name: api-calls
     image: python:3.11.10
-    restart: always
     network_mode: host
     volumes:
       - ./calls/:/calls/
