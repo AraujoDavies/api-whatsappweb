@@ -45,6 +45,10 @@ def flash_personalizado_pinbet():
         "FTD DIA VR",
         "FTD RETENÇÃO VR",
     ]
+    parametros_emoji = [
+        "Lucro (GGR)",
+        "Resultado",
+    ]
     parametros_percentuais = [
         "FTD DIA QTD %",
         "FTD DIA %",
@@ -60,47 +64,55 @@ def flash_personalizado_pinbet():
     ]
     for data, hr, parametro, valor in result:
         valor_ajustado = round(valor, 2)
+
         if parametro in parametros_monetarios:
+            valor_formatado = f"{valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+            emoji = ''
             if valor < 0:
-                valor_ajustado = str(valor_ajustado).replace(
-                    ".", ","
-                ).replace('-', '')
-                dict_helper[parametro] = "-R$ " + valor_ajustado
+                if parametro in parametros_emoji:
+                    emoji = '🔻'
+                valor_formatado = str(valor_formatado).replace('-', '')
+                dict_helper[parametro] = "-R$ " + valor_formatado + emoji
             else:
-                dict_helper[parametro] = "R$ " + str(valor_ajustado).replace(".", ",")
+                if parametro in parametros_emoji:
+                    emoji = '🟡' if valor == 0 else '🔹'                   
+                dict_helper[parametro] = "R$ " + str(valor_formatado) + emoji
+
         elif parametro in parametros_percentuais:
-            dict_helper[parametro] = str(valor_ajustado) + "%"
+            dict_helper[parametro] = str(round(valor_ajustado)) + "%"
+
         elif parametro in parametros_inteiros:
             dict_helper[parametro] = int(valor_ajustado)
+
         else:
             print(f"Parametro {parametro} nao cadastrado!")
 
-    mensagem = f"""FLASH WTS 15 min 
-PINBET 
-POR DIA (Horário: {hr})
-
-Lucro (GGR) {dict_helper['Lucro (GGR)']}
+    mensagem = f"""*Resultado GGR* {dict_helper['Lucro (GGR)']} 
 GGR Esporte {dict_helper['GGR Esporte']}
 GGR Cassino {dict_helper['GGR Cassino']}
 
 ----
+
+*Resultado DEP-SAQ-AF* {dict_helper['Resultado']}
 Depósitos: {dict_helper['Depósitos']}
 Saque cliente: {dict_helper['Saque cliente']}
 Subtotal: {dict_helper['Subtotal']}
-Saque afiliado: {dict_helper['Saque afiliado']} Analisar
-Resultado: {dict_helper['Resultado']}  DEP - TODOS OS SAQUES 
+Saque afiliado: {dict_helper['Saque afiliado']} 
+
 ----
 
-TOTAL Cadastros do dia : {dict_helper['TOTAL Cadastros do dia']}  
------
-FTD Total QTD: {dict_helper['FTD Total QTD']}
-FTD DIA QTD {dict_helper['FTD DIA QTD']}
-FTD DIA QTD % - ({dict_helper['FTD DIA %']} sobre o total FTD)
-FTD RETENÇÃO QTD {dict_helper['FTD RETENÇÃO QTD']} ({dict_helper['FTD RETENÇÃO %']} sobre o total FTD)
+TOTAL Cadastros do dia : {dict_helper['TOTAL Cadastros do dia']}
 
-FTD DEP TOTAL {dict_helper['FTD Total VR']}
-FTD DIA  DEP {dict_helper['FTD DIA VR']} ({dict_helper['FTD DIA VR %']} sobre o total FTD)
-FTD RETENÇÃO DEP {dict_helper['FTD RETENÇÃO VR']} ({dict_helper['FTD RETENÇÃO VR %']} sobre o total FTD)
+-----
+
+*FTD Total QTD* {dict_helper['FTD Total QTD']}
+FTD DIA QTD: {dict_helper['FTD DIA QTD']} ({dict_helper['FTD DIA %']})
+FTD RETENÇÃO QTD: {dict_helper['FTD RETENÇÃO QTD']} ({dict_helper['FTD RETENÇÃO %']})
+
+*FTD DEP TOTAL* {dict_helper['FTD Total VR']}
+FTD DIA DEP: {dict_helper['FTD DIA VR']} ({dict_helper['FTD DIA VR %']})
+FTD RETENÇÃO DEP: {dict_helper['FTD RETENÇÃO VR']} ({dict_helper['FTD RETENÇÃO VR %']})
 
 ----"""
 
