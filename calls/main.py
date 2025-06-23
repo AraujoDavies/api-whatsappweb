@@ -12,7 +12,7 @@ logging.basicConfig(
 
 
 # envios schedulados
-chat_name = 'Flash Pinbet'
+chat_name = 'MONITORAMENTO - PINBET!'
 comando_sql = "CALL pinbet.proc_flash_whatsapp_15min;"
 flash_personalizado_weebet(chat_name, comando_sql)
 schedule.every(15).minutes.do(flash_personalizado_weebet, chat_name=chat_name, comando_sql=comando_sql)
