@@ -27,68 +27,69 @@ def flash_padrao(comando_sql: str, flash_title: str = "FLASH ...", chat_name: st
 
 
 def flash_personalizado_weebet(chat_name: str, comando_sql: str):
-    with engine.connect() as conn:
-        result = conn.execute(text(comando_sql)).fetchall()
+    try:
+        with engine.connect() as conn:
+            result = conn.execute(text(comando_sql)).fetchall()
 
-    dict_helper = {}
-    parametros_monetarios = [
-        "Lucro (GGR)",
-        "GGR Esporte",
-        "GGR Cassino",
-        "Depósitos",
-        "Saque cliente",
-        "Subtotal",
-        "Saque afiliado",
-        "Resultado",
-        "FTD Total VR",
-        "FTD DIA VR",
-        "FTD RETENÇÃO VR",
-    ]
-    parametros_emoji = [
-        "Lucro (GGR)",
-        "Resultado",
-    ]
-    parametros_percentuais = [
-        "FTD DIA QTD %",
-        "FTD DIA %",
-        "FTD RETENÇÃO %",
-        "FTD DIA VR %",
-        "FTD RETENÇÃO VR %",
-        "Taxa de conversão",
-    ]
-    parametros_inteiros = [
-        "FTD RETENÇÃO QTD",
-        "TOTAL Cadastros do dia",
-        "FTD Total QTD",
-        "FTD DIA QTD",
-    ]
-    for data, hr, parametro, valor in result:
-        valor_ajustado = round(valor, 2)
+        dict_helper = {}
+        parametros_monetarios = [
+            "Lucro (GGR)",
+            "GGR Esporte",
+            "GGR Cassino",
+            "Depósitos",
+            "Saque cliente",
+            "Subtotal",
+            "Saque afiliado",
+            "Resultado",
+            "FTD Total VR",
+            "FTD DIA VR",
+            "FTD RETENÇÃO VR",
+        ]
+        parametros_emoji = [
+            "Lucro (GGR)",
+            "Resultado",
+        ]
+        parametros_percentuais = [
+            "FTD DIA QTD %",
+            "FTD DIA %",
+            "FTD RETENÇÃO %",
+            "FTD DIA VR %",
+            "FTD RETENÇÃO VR %",
+            "Taxa de conversão",
+        ]
+        parametros_inteiros = [
+            "FTD RETENÇÃO QTD",
+            "TOTAL Cadastros do dia",
+            "FTD Total QTD",
+            "FTD DIA QTD",
+        ]
+        for data, hr, parametro, valor in result:
+            valor_ajustado = round(valor, 2)
 
-        if parametro in parametros_monetarios:
-            valor_formatado = f"{valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+            if parametro in parametros_monetarios:
+                valor_formatado = f"{valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
-            emoji = ''
-            if valor < 0:
-                if parametro in parametros_emoji:
-                    emoji = '🔻'
-                valor_formatado = str(valor_formatado).replace('-', '')
-                dict_helper[parametro] = "-R$ " + valor_formatado + emoji
+                emoji = ''
+                if valor < 0:
+                    if parametro in parametros_emoji:
+                        emoji = '🔻'
+                    valor_formatado = str(valor_formatado).replace('-', '')
+                    dict_helper[parametro] = "-R$ " + valor_formatado + emoji
+                else:
+                    if parametro in parametros_emoji:
+                        emoji = '🟡' if valor == 0 else '🔹'                   
+                    dict_helper[parametro] = "R$ " + str(valor_formatado) + emoji
+
+            elif parametro in parametros_percentuais:
+                dict_helper[parametro] = str(round(valor_ajustado)) + "%"
+
+            elif parametro in parametros_inteiros:
+                dict_helper[parametro] = int(valor_ajustado)
+
             else:
-                if parametro in parametros_emoji:
-                    emoji = '🟡' if valor == 0 else '🔹'                   
-                dict_helper[parametro] = "R$ " + str(valor_formatado) + emoji
+                print(f"Parametro {parametro} nao cadastrado!")
 
-        elif parametro in parametros_percentuais:
-            dict_helper[parametro] = str(round(valor_ajustado)) + "%"
-
-        elif parametro in parametros_inteiros:
-            dict_helper[parametro] = int(valor_ajustado)
-
-        else:
-            print(f"Parametro {parametro} nao cadastrado!")
-
-    mensagem = f"""*Resultado GGR* {dict_helper['Lucro (GGR)']} 
+        mensagem = f"""*Resultado GGR* {dict_helper['Lucro (GGR)']} 
 GGR Esporte {dict_helper['GGR Esporte']}
 GGR Cassino {dict_helper['GGR Cassino']}
 
@@ -116,6 +117,8 @@ FTD RETENÇÃO DEP: {dict_helper['FTD RETENÇÃO VR']} ({dict_helper['FTD RETEN�
 
 ----"""
 
-    enviado = envio(chat_name, mensagem)
+        enviado = envio(chat_name, mensagem)
 
-    logging.warning("%s - %s", chat_name, enviado)
+        logging.warning("%s - %s", chat_name, enviado)
+    except Exception as error:
+        logging.error('%s: %s', chat_name, error)
