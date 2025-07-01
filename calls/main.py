@@ -15,15 +15,19 @@ logging.basicConfig(
 chat_name = 'MONITORAMENTO - PINBET!'
 comando_sql = "CALL pinbet.proc_flash_whatsapp_15min;"
 flash_personalizado_weebet(chat_name, comando_sql)
+schedule.every().day.at("11:59").do(flash_personalizado_weebet, chat_name=chat_name, comando_sql=comando_sql)
+schedule.every().day.at("23:59").do(flash_personalizado_weebet, chat_name=chat_name, comando_sql=comando_sql)
 schedule.every(15).minutes.do(flash_personalizado_weebet, chat_name=chat_name, comando_sql=comando_sql)
 
 
 chat_name = 'Flash APF'
 comando_sql = "CALL apostefacil.proc_flash_whatsapp_15min;"
 flash_personalizado_weebet(chat_name, comando_sql)
+schedule.every().day.at("11:59").do(flash_personalizado_weebet, chat_name=chat_name, comando_sql=comando_sql)
+schedule.every().day.at("23:59").do(flash_personalizado_weebet, chat_name=chat_name, comando_sql=comando_sql)
 schedule.every(15).minutes.do(flash_personalizado_weebet, chat_name=chat_name, comando_sql=comando_sql)
 
 
 while True:
     schedule.run_pending()
-    time.sleep(30)
+    time.sleep(1)
